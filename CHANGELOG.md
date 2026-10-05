@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.2.4] - 2026-10-05
+
+### Fixed
+- **Passkeys on HTTP dev domains**: Passkey flows (login, MFA enroll/challenge, lockscreen, settings) now detect an insecure context and ask for HTTPS or `localhost` instead of wrongly reporting "WebAuthn / Passkeys are not supported by this browser".
+- **`Unknown column 'session_id'` on device enrollment**: Added migration `2026_10_05_000000_add_device_trust_columns_to_user_devices_table` to backfill `session_id`, `device_label`, and `is_trusted` on `user_devices`, which the v1.3.0 schema skipped when the v1.1.0 table already existed.
+- **Settings page TypeError with `App\Models\User`**: `UserWebController` now resolves the host app's authenticated user to the slice `User` model.
+- **`Call to undefined method hasRole()`**: `slice:install` now injects `HasSlicePermissions` into the app's User model whatever traits it already uses (e.g. `use HasApiTokens, HasFactory, Notifiable;`).
+- **`ComponentAttributeBag::twMerge does not exist`**: Registered the `twMerge` attribute macro used by the published BlatUI components, backed by the new `gehrisandro/tailwind-merge-php` dependency. An app-provided `twMerge` macro takes precedence.
+- **`[postcss] ENOENT ... open 'tailwindcss'` on `npm run dev`**: `slice:install` now adds `tailwindcss` and `@tailwindcss/vite` v4 to `package.json`, registers the Tailwind plugin in `vite.config.js`, and runs `npm install` when any required package is missing. The starter `blatui.css` now scans `vendor/hereafter/laraslice` instead of a non-existent vendor path and a hard-coded local `E:/` path.
+
 ## [1.2.3] - 2026-03-31
 
 ### Fixed
